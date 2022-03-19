@@ -3,12 +3,12 @@
 #include "Poco/URI.h"
 
 namespace charta {
-class HelloHandler : public Poco::Net::HTTPRequestHandler {
+class CreateImageHandler : public Poco::Net::HTTPRequestHandler {
 private:
   Poco::URI uri_;
 
 public:
-  HelloHandler(Poco::URI uri) : uri_{std::move(uri)} {}
+  CreateImageHandler(Poco::URI uri) : uri_(std::move(uri)) {}
 
   void handleRequest(Poco::Net::HTTPServerRequest &request,
                      Poco::Net::HTTPServerResponse &response) override;
