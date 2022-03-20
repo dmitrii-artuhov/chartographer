@@ -14,27 +14,20 @@ using namespace Poco::Net;
 void CreateImageHandler::handleRequest(HTTPServerRequest &request,
                                        HTTPServerResponse &response) {
   try {
-    response.setStatus(HTTPResponse::HTTP_CREATED);
     Poco::URI::QueryParameters params = uri_.getQueryParameters();
 
-    int width, height;
-    std::string response_text = "Create Image:\n";
-    for (auto &[key, value] : params) {
-      response_text += key + " : " + value + "\n";
-      if (key == "width") {
-        width = std::stoi(value);
-      } else if (key == "height") {
-        height = std::stoi(value);
-      }
-    }
+    int width = std::stoi(utils::GetDefaultedQueryValue(params, "width", "0"));
+    int height =
+        std::stoi(utils::GetDefaultedQueryValue(params, "height", "0"));
 
     std::string image_name = utils::generateUUID().toString() + ".bmp";
     BMPImage image = BMPImage(width, height, image_name);
-    image.SaveToFile("");
+    image.SaveToFile(working_directory_ + "/");
 
-    response.setContentType("text/plain");
-    response.send() << response_text;
+    response.setStatusAndReason(HTTPResponse::HTTP_CREATED, "Created");
   } catch (const std::exception &err) {
     std::cerr << err.what() << std::endl;
+    response.setStatusAndReason(HTTPResponse::HTTP_BAD_REQUEST, "Bad Request");
   }
+  response.send();
 }

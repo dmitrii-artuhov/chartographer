@@ -2,6 +2,7 @@
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Util/OptionSet.h"
 #include "handlers/handler_factory.h"
+#include <iostream>
 
 using namespace charta;
 using namespace Poco::Net;
@@ -27,7 +28,8 @@ void ChartographerApplication::initialize(Application &app) {
 
 int ChartographerApplication::main(const std::vector<std::string> &args) {
   ServerSocket socket{8080};
-  HTTPServer server{new HandlerFactory{}, socket, new HTTPServerParams{}};
+  HTTPServer server{new HandlerFactory{working_folder_.string()}, socket,
+                    new HTTPServerParams{}};
   server.start();
   waitForTerminationRequest();
   server.stop();

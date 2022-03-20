@@ -18,5 +18,17 @@ inline static Poco::UUIDGenerator getUUIDGenerator() {
 }
 
 inline Poco::UUID generateUUID() { return getUUIDGenerator().create(); }
+
+inline std::string GetDefaultedQueryValue(Poco::URI::QueryParameters query,
+                                          std::string_view needle,
+                                          std::string_view default_value) {
+  for (const auto &[key, value] : query) {
+    if (key == needle && !value.empty()) {
+      return value;
+    }
+  }
+
+  return std::string{default_value};
+}
 } // namespace charta::utils
 #endif

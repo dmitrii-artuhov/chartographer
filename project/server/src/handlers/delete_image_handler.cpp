@@ -1,16 +1,22 @@
 #include "handlers/delete_image_handler.h"
 #include "Poco/Net/HTTPServerResponse.h"
+#include "charta/image.h"
 #include "utils/utils.h"
+#include <iostream>
 
 using namespace charta;
 using namespace Poco::Net;
 
 void DeleteImageHandler::handleRequest(HTTPServerRequest &request,
                                        HTTPServerResponse &response) {
-  response.setStatus(HTTPResponse::HTTP_OK);
+  try {
+    std::string image_name = utils::GetPathSegmentValue(uri_, 1) + ".bmp";
+    BMPImage::DeleteImage(working_directory_ + "/" + image_name);
+    response.setStatusAndReason(HTTPResponse::HTTP_OK, "OK");
+  } catch (const std::exception &err) {
+    std::cerr << err.what() << std::endl;
+    response.setStatusAndReason(HTTPResponse::HTTP_NOT_FOUND, "Not Found");
+  }
 
-  std::string response_text =
-      "Delete image by ID: " + utils::GetPathSegmentValue(uri_, 1);
-  response.setContentType("text/plain");
-  response.send() << response_text;
+  response.send();
 }

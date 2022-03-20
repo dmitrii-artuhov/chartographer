@@ -28,16 +28,16 @@ HandlerFactory::createRequestHandler(const HTTPServerRequest &request) {
     return new HelloHandler{uri};
   } else if (uriSegments.size() == 1U && uriSegments[0] == "chartas" &&
              request.getMethod() == "POST") {
-    return new CreateImageHandler{uri};
+    return new CreateImageHandler{uri, working_directory_};
   } else if (uriSegments.size() == 2U && uriSegments[0] == "chartas" &&
              request.getMethod() == "POST") {
-    return new UpdateImageHandler{uri};
+    return new UpdateImageHandler{uri, working_directory_};
   } else if (uriSegments.size() == 2U && uriSegments[0] == "chartas" &&
              request.getMethod() == "GET") {
-    return new GetImageHandler{uri};
+    return new GetImageHandler{uri, working_directory_};
   } else if (uriSegments.size() == 2U && uriSegments[0] == "chartas" &&
              request.getMethod() == "DELETE") {
-    return new DeleteImageHandler{uri};
+    return new DeleteImageHandler{uri, working_directory_};
   }
 
   return new NotFoundHandler{};
