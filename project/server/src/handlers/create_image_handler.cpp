@@ -20,14 +20,16 @@ void CreateImageHandler::handleRequest(HTTPServerRequest &request,
     int height =
         std::stoi(utils::GetDefaultedQueryValue(params, "height", "0"));
 
-    std::string image_name = utils::generateUUID().toString() + ".bmp";
+    std::string uuid = utils::generateUUID().toString();
+    std::string image_name = uuid + ".bmp";
     BMPImage image = BMPImage(width, height, image_name);
     image.SaveToFile(working_directory_ + "/");
 
     response.setStatusAndReason(HTTPResponse::HTTP_CREATED, "Created");
+    response.send() << uuid;
   } catch (const std::exception &err) {
     std::cerr << err.what() << std::endl;
     response.setStatusAndReason(HTTPResponse::HTTP_BAD_REQUEST, "Bad Request");
+    response.send();
   }
-  response.send();
 }
