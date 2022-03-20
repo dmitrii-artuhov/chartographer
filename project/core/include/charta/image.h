@@ -11,13 +11,13 @@ private:
 
   static int GetPaddingByteCountPerRow(int byte_count_per_row) noexcept;
 
-public:
   std::string filename = "";
   int width = 0;
   int height = 0;
   int size = 0;
   std::vector<uint8_t> data;
 
+public:
   static const int MAX_WIDTH = 20'000;
   static const int MAX_HEIGHT = 50'000;
   static const int BIT_COUNT = 24;

@@ -67,7 +67,7 @@ TEST_CASE("Overlay big image with small one") {
   big.LoadFromFile("../../.data/", "big-one.bmp");
   big.SetName("big-overlayed.bmp");
 
-  big.OverlayByImage(small, 29, 19, small.width, small.height);
+  big.OverlayByImage(small, 29, 19, 3, 2);
   big.SaveToFile("../../.data/");
 }
 
@@ -90,6 +90,15 @@ TEST_CASE("Crop another image") {
     std::cout << byte << ' ';
   }
   std::cout << std::endl;
+}
+
+TEST_CASE("Lena") {
+  BMPImage Lena;
+  Lena.LoadFromFile("../../.data/", "lena-512-cropped-rotated-1.bmp");
+  BMPImage big;
+  big.LoadFromFile("../../.data/", "f0a99db8-a878-11ec-a44a-00155dc3f58b.bmp");
+
+  big.OverlayByImage(Lena, 0, 0, 60, 80);
 }
 
 // Save to buffer
