@@ -3,21 +3,23 @@
 #include "charta/errors.h"
 #include "stb_image.h"
 #include "stb_image_write.h"
+#include <filesystem>
 #include <iostream>
 #include <string>
 
 using namespace charta;
 
-std::string BMPImage::GetFullFileLocation(const std::filesystem::path &path) {
+std::string
+BMPImage::GetFullFileLocation(const std::filesystem::path &path) const {
   return path.string() + filename;
 }
 
 BMPImage::BMPImage(int width_, int height_, std::string filename_) {
-  if (width_ < 0 || width_ > BMPImage::MAX_WIDTH) {
+  if (width_ <= 0 || width_ > BMPImage::MAX_WIDTH) {
     throw InvalidImageWidth(width_);
   }
 
-  if (height_ < 0 || height_ > BMPImage::MAX_HEIGHT) {
+  if (height_ <= 0 || height_ > BMPImage::MAX_HEIGHT) {
     throw InvalidImageHeight(height_);
   }
 
@@ -37,11 +39,21 @@ BMPImage::BMPImage(int width_, int height_, std::string filename_) {
   }
 }
 
-void BMPImage::SaveToFile(std::filesystem::path path) {
+void BMPImage::SaveToFile(const std::filesystem::path &path) const {
   std::string location = GetFullFileLocation(path);
   if (!stbi_write_bmp(location.c_str(), width, height, BMPImage::CHANNELS,
                       data.data())) {
     throw UnableToSaveImage(location);
+  }
+}
+
+void BMPImage::DeleteImage(const std::filesystem::path &path) {
+  try {
+    if (!std::filesystem::remove(path)) {
+      throw UnableToDeleteImage(path.string());
+    }
+  } catch (const std::filesystem::filesystem_error &) {
+    throw UnableToDeleteImage(path.string());
   }
 }
 
