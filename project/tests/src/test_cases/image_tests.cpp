@@ -5,6 +5,7 @@
 
 using namespace charta;
 
+// Create
 TEST_CASE("Create image and save to file") {
   BMPImage image;
   CHECK_NOTHROW(image = BMPImage(10, 10, "img1.bmp"));
@@ -13,14 +14,23 @@ TEST_CASE("Create image and save to file") {
 
 TEST_CASE("Create image with invalid dimensions") {
   BMPImage image;
-  CHECK_THROWS_WITH(image = BMPImage(-10, 10, "img1.bmp"),
-                    "Invalid image width provided: '-10'");
-  CHECK_THROWS_WITH(image = BMPImage(10, -35, "img1.bmp"),
-                    "Invalid image height provided: '-35'");
+  CHECK_THROWS_AS(image = BMPImage(-10, 10, "img1.bmp"), InvalidImageWidth);
+  CHECK_THROWS_AS(image = BMPImage(10, -35, "img1.bmp"), InvalidImageHeight);
 }
 
 TEST_CASE("Create image with invalid name") {
   BMPImage image;
-  CHECK_THROWS_WITH(image = BMPImage(10, 35, ""),
-                    "Invalid image name provided");
+  CHECK_THROWS_AS(image = BMPImage(10, 35, ""), InvalidImageName);
+}
+
+// Delete
+TEST_CASE("Delete image successufully") {
+  BMPImage image;
+  CHECK_NOTHROW(image = BMPImage(10, 10, "img1.bmp"));
+  CHECK_NOTHROW(BMPImage::DeleteImage("img1.bmp"));
+}
+
+TEST_CASE("Delete image with invalid path") {
+  CHECK_THROWS_AS(BMPImage::DeleteImage("do-not-exist.bmp"),
+                  UnableToDeleteImage);
 }
