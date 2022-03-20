@@ -25,3 +25,6 @@ InvalidImageMemoryAllocation::InvalidImageMemoryAllocation(
 
 UnableToSaveImage::UnableToSaveImage(const std::string &path)
     : ChartaError("Unable to save image to: '" + path + "'") {}
+
+UnableToDeleteImage::UnableToDeleteImage(const std::string &path)
+    : ChartaError("Unable to delete file at '" + path + "'") {}

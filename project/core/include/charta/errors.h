@@ -28,4 +28,8 @@ struct UnableToSaveImage : ChartaError {
   explicit UnableToSaveImage(const std::string &path);
 };
 
+struct UnableToDeleteImage : ChartaError {
+  explicit UnableToDeleteImage(const std::string &path);
+};
+
 } // namespace charta
