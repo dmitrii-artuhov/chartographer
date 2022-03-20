@@ -32,4 +32,16 @@ struct UnableToDeleteImage : ChartaError {
   explicit UnableToDeleteImage(const std::string &path);
 };
 
+struct UnableToLoadImage : ChartaError {
+  explicit UnableToLoadImage(const std::string &path);
+};
+
+struct InvalidImageFormat : ChartaError {
+  explicit InvalidImageFormat();
+};
+
+struct InvalidImageBounds : ChartaError {
+  explicit InvalidImageBounds();
+};
+
 } // namespace charta

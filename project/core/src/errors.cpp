@@ -28,3 +28,12 @@ UnableToSaveImage::UnableToSaveImage(const std::string &path)
 
 UnableToDeleteImage::UnableToDeleteImage(const std::string &path)
     : ChartaError("Unable to delete file at '" + path + "'") {}
+
+UnableToLoadImage::UnableToLoadImage(const std::string &path)
+    : ChartaError("Unable to load image at '" + path + "'") {}
+
+InvalidImageFormat::InvalidImageFormat()
+    : ChartaError("Invalid image format") {}
+
+InvalidImageBounds::InvalidImageBounds()
+    : ChartaError("Image subscription does not overlay") {}
