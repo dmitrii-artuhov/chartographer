@@ -78,3 +78,28 @@ TEST_CASE("Crop image") {
   CHECK_NOTHROW(image.SetName("cropped-small-one.bmp"));
   CHECK_NOTHROW(image.Crop(0, 1, 3, 2).SaveToFile("../../.data/"));
 }
+
+TEST_CASE("Crop another image") {
+  BMPImage image;
+  CHECK_NOTHROW(image.LoadFromFile("../../.data/", "big-one.bmp"));
+  CHECK_NOTHROW(image.SetName("cropped-big-one.bmp"));
+  CHECK_NOTHROW(image.Crop(0, 0, 3, 2).SaveToFile("../../.data/"));
+  std::vector<uint8_t> buffer;
+  image.Crop(0, 0, 3, 2).SaveToBuffer(buffer);
+  for (int byte : buffer) {
+    std::cout << byte << ' ';
+  }
+  std::cout << std::endl;
+}
+
+// Save to buffer
+// TEST_CASE("Save to buffer") {
+//   BMPImage image;
+//   image.LoadFromFile("../../.data/", "small-one.bmp");
+//   std::vector<uint8_t> buffer;
+//   image.SaveToBuffer(buffer);
+// for (int byte : buffer) {
+//   std::cout << byte << ' ';
+// }
+// std::cout << std::endl;
+// }

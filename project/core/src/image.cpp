@@ -54,8 +54,21 @@ void BMPImage::SaveToFile(const std::filesystem::path &path) const {
   }
 }
 
+void save_to_buffer(void *context, void *data, int size) {
+  std::vector<uint8_t> pack(size);
+  std::memcpy(pack.data(), data, size);
+
+  std::vector<uint8_t> *buffer =
+      reinterpret_cast<std::vector<uint8_t> *>(context);
+
+  for (uint8_t byte : pack) {
+    buffer->push_back(byte);
+  }
+}
+
 void BMPImage::SaveToBuffer(std::vector<uint8_t> &buffer) const {
-    // stbi_write_bmp_core
+  stbi_write_bmp_to_func(&save_to_buffer, &buffer, width, height,
+                         BMPImage::CHANNELS, data.data());
 };
 
 void BMPImage::DeleteImage(const std::filesystem::path &path) {
